@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Icon } from "../components"
 import { translate } from "../i18n"
 import { DemoCommunityScreen, DemoShowroomScreen, DemoDebugScreen } from "../screens"
+import CardSwipeScreen from "../screens/CardSwipeScreen"
 import { DemoPodcastListScreen } from "../screens/DemoPodcastListScreen"
 import { colors, spacing, typography } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
@@ -15,6 +16,7 @@ export type DemoTabParamList = {
   DemoShowroom: undefined
   DemoDebug: undefined
   DemoPodcastList: undefined
+  DemoCards: undefined
 }
 
 /**
@@ -77,6 +79,15 @@ export function DemoNavigator() {
         options={{
           tabBarLabel: translate("demoNavigator.debugTab"),
           tabBarIcon: ({ focused }) => <Icon icon="debug" color={focused && colors.tint} />,
+        }}
+      />
+
+      <Tab.Screen
+        name="DemoCards"
+        component={CardSwipeScreen}
+        options={{
+          tabBarLabel: "Card Tab",
+          tabBarIcon: ({ focused }) => <Icon icon="components" color={focused && colors.tint} />,
         }}
       />
     </Tab.Navigator>
