@@ -1,6 +1,8 @@
 import { observer } from "mobx-react-lite"
 import React, {
   FC,
+  useEffect,
+  useState,
   useLayoutEffect, // @demo remove-current-line
 } from "react"
 import { Image, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
@@ -14,6 +16,7 @@ import { isRTL } from "../i18n"
 import { useStores } from "../models" // @demo remove-current-line
 import { AppStackScreenProps } from "../navigators" // @demo remove-current-line
 import { colors, spacing } from "../theme"
+import { api } from "../services/api/api_yelp"
 
 const welcomeLogo = require("../../assets/images/logo.png")
 const welcomeFace = require("../../assets/images/welcome-face.png")
@@ -40,6 +43,18 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
     })
   }, [])
   // @demo remove-block-end
+
+
+  // TEST for api yelp
+  const [getRestaurants, setRestaurants] = useState([]);
+  useEffect(() => {
+    var r = (async() => {
+      await api.getRestaurants().then((r) => {setRestaurants(r)});
+    })();
+  }, [])
+  useEffect(() => {
+    console.log(getRestaurants)
+  }, [getRestaurants])
 
   return (
     <View style={$container}>
