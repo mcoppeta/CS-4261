@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ImageBackground, Text, View } from 'react-native'
 import TinderCard from 'react-tinder-card'
+import { api } from "../services/api/api_yelp"
 
 const styles = {
   container: {
@@ -51,18 +52,27 @@ const styles = {
   }
 }
 
-const db = [
-  {
-    name: 'Ignite Icon',
-    img: require('../../assets/images/app-icon-all.png')
-  },
-  {
-    name: 'Ignite Logo',
-    img: require('../../assets/images/logo.png')
-  }
-]
+const db = [] 
+
 
 function Simple() {
+  // TEST for api yelp
+  const [getRestaurants, setRestaurants] = useState([]);
+  useEffect(() => {
+    var r = (async() => {
+      await api.getRestaurants().then((r) => {setRestaurants(r)});
+    })();
+  }, [])
+  useEffect(() => {
+    console.log(getRestaurants)
+  }, [getRestaurants]) 
+
+  // This pushes the name and image URL from each element of getRestaurants to db.
+  getRestaurants.map(element => {
+    db.push(
+      {name: element['name'], img: element['image_url']}
+    )
+  });
   const characters = db
   const [lastDirection, setLastDirection] = useState()
 
@@ -82,7 +92,7 @@ function Simple() {
         {characters.map((character) =>
           <TinderCard key={character.name} onSwipe={(dir) => swiped(dir, character.name)} onCardLeftScreen={() => outOfFrame(character.name)}>
             <View style={styles.card}>
-              <ImageBackground style={styles.cardImage} source={character.img}>
+              <ImageBackground style={styles.cardImage} source={{uri: character.img}}>
                 <Text style={styles.cardTitle}>{character.name}</Text>
               </ImageBackground>
             </View>
