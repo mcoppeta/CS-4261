@@ -44,7 +44,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
   }, [])
   // @demo remove-block-end
 
-
+/*
   // TEST for api yelp
   const [getRestaurants, setRestaurants] = useState([]);
   useEffect(() => {
@@ -54,7 +54,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
   }, [])
   useEffect(() => {
     console.log(getRestaurants)
-  }, [getRestaurants])
+  }, [getRestaurants])*/
 
   return (
     <View style={$container}>

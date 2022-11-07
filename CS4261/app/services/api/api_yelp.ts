@@ -43,8 +43,10 @@ export class yelpAPI {
       image_url -> URL to the restaurant image on Yelp
       rating -> Yelp's rating
   */
-  async getRestaurants(location = 'Georgia Tech', category = 'food', limit = 20, offset = 0) {
+  async getRestaurants({location = 'Georgia Tech', category = 'food', limit = 20, offset = 0}) {
     // make the api call
+    console.log('in function')
+    console.log({offset})
     const response = await this.apisauce.get(
       `/businesses/search?location=${location}&category=${category}&limit=${limit}&offset=${offset}`,
     ).then((res) => {

@@ -54,34 +54,46 @@ const styles = {
 
 const db = [] 
 
+var queueIdx = 0
+var queueSize = 0
+const updateQueue = async (getRestaurants, setRestaurants) => {
+  if (queueSize < 10) {
+    await api.getRestaurants({offset:queueIdx}).then((r) => {setRestaurants(r)});
+  }
+}
+
 
 function Simple() {
   // TEST for api yelp
   const [getRestaurants, setRestaurants] = useState([]);
+
+  useEffect(() => {updateQueue(getRestaurants, setRestaurants)}, []) // on start only
   useEffect(() => {
-    var r = (async() => {
-      await api.getRestaurants().then((r) => {setRestaurants(r)});
-    })();
-  }, [])
-  useEffect(() => {
-    console.log(getRestaurants)
-  }, [getRestaurants]) 
+    console.log(queueSize)
+    updateQueue(getRestaurants, setRestaurants)}, [queueSize])
 
   // This pushes the name and image URL from each element of getRestaurants to db.
-  getRestaurants.map(element => {
-    if (db.some(e => e.name === element.name)) {
+  useEffect(() => {
+    console.log('r: ' + getRestaurants)
+    getRestaurants.map(element => {
+      if (db.some(e => e.name === element.name)) {
 
-    } else {
-      db.push(
-        {name: element['name'], img: element['image_url']}
-      )
-    }
-  });
+      } else {
+        db.push(
+          {name: element['name'], img: element['image_url']}
+        )
+        queueIdx += 1
+        queueSize += 1
+      }
+    });
+  }, [getRestaurants])
+  
   const characters = db
   const [lastDirection, setLastDirection] = useState()
 
   const swiped = (direction, nameToDelete) => {
     console.log('removing: ' + nameToDelete)
+    queueSize -= 1
     setLastDirection(direction)
   }
 
