@@ -67,20 +67,20 @@ export function DemoNavigator() {
       */}
 
       <Tab.Screen
-        name="DemoPodcastList"
-        component={DemoPodcastListScreen}
-        options={{
-          tabBarLabel: 'Preferences', //translate("demoNavigator.podcastListTab"),
-          tabBarIcon: ({ focused }) => <Icon icon="podcast" color={focused && colors.tint} />,
-        }}
-      />
-
-      <Tab.Screen
         name="DemoCommunity"
         component={DemoCommunityScreen}
         options={{
-          tabBarLabel: 'Friends', //translate("demoNavigator.communityTab"),
+          tabBarLabel: 'Preferences', //translate("demoNavigator.communityTab"),
           tabBarIcon: ({ focused }) => <Icon icon="community" color={focused && colors.tint} />,
+        }}
+      />
+
+    <Tab.Screen
+        name="DemoPodcastList"
+        component={DemoPodcastListScreen}
+        options={{
+          tabBarLabel: 'Friends', //translate("demoNavigator.podcastListTab"),
+          tabBarIcon: ({ focused }) => <Icon icon="podcast" color={focused && colors.tint} />,
         }}
       />
 
