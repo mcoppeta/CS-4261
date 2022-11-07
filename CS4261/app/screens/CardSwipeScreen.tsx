@@ -69,9 +69,13 @@ function Simple() {
 
   // This pushes the name and image URL from each element of getRestaurants to db.
   getRestaurants.map(element => {
-    db.push(
-      {name: element['name'], img: element['image_url']}
-    )
+    if (db.some(e => e.name === element.name)) {
+
+    } else {
+      db.push(
+        {name: element['name'], img: element['image_url']}
+      )
+    }
   });
   const characters = db
   const [lastDirection, setLastDirection] = useState()
