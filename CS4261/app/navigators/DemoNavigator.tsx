@@ -47,6 +47,16 @@ export function DemoNavigator() {
       }}
     >
       <Tab.Screen
+        name="DemoCards"
+        component={CardSwipeScreen}
+        options={{
+          tabBarLabel: "Restaurants",
+          tabBarIcon: ({ focused }) => <Icon icon="components" color={focused && colors.tint} />,
+        }}
+      />
+
+      {/*
+      <Tab.Screen
         name="DemoShowroom"
         component={DemoShowroomScreen}
         options={{
@@ -54,22 +64,23 @@ export function DemoNavigator() {
           tabBarIcon: ({ focused }) => <Icon icon="components" color={focused && colors.tint} />,
         }}
       />
-
-      <Tab.Screen
-        name="DemoCommunity"
-        component={DemoCommunityScreen}
-        options={{
-          tabBarLabel: translate("demoNavigator.communityTab"),
-          tabBarIcon: ({ focused }) => <Icon icon="community" color={focused && colors.tint} />,
-        }}
-      />
+      */}
 
       <Tab.Screen
         name="DemoPodcastList"
         component={DemoPodcastListScreen}
         options={{
-          tabBarLabel: translate("demoNavigator.podcastListTab"),
+          tabBarLabel: 'Preferences', //translate("demoNavigator.podcastListTab"),
           tabBarIcon: ({ focused }) => <Icon icon="podcast" color={focused && colors.tint} />,
+        }}
+      />
+
+      <Tab.Screen
+        name="DemoCommunity"
+        component={DemoCommunityScreen}
+        options={{
+          tabBarLabel: 'Friends', //translate("demoNavigator.communityTab"),
+          tabBarIcon: ({ focused }) => <Icon icon="community" color={focused && colors.tint} />,
         }}
       />
 
@@ -77,17 +88,8 @@ export function DemoNavigator() {
         name="DemoDebug"
         component={DemoDebugScreen}
         options={{
-          tabBarLabel: translate("demoNavigator.debugTab"),
+          tabBarLabel: 'Account', //translate("demoNavigator.debugTab"),
           tabBarIcon: ({ focused }) => <Icon icon="debug" color={focused && colors.tint} />,
-        }}
-      />
-
-      <Tab.Screen
-        name="DemoCards"
-        component={CardSwipeScreen}
-        options={{
-          tabBarLabel: "Card Tab",
-          tabBarIcon: ({ focused }) => <Icon icon="components" color={focused && colors.tint} />,
         }}
       />
     </Tab.Navigator>
