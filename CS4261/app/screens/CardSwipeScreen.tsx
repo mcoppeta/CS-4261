@@ -18,7 +18,7 @@ const styles = {
   cardContainer: {
     width: '90%',
     maxWidth: 260,
-    height: 300,
+    height: 400,
   },
   card: {
     position: 'absolute',
@@ -43,6 +43,13 @@ const styles = {
     bottom: 0,
     margin: 10,
     color: '#fff',
+  },
+  cardAdditionalInfo: {
+    position: 'absolute',
+    bottom: 260,
+    margin: 10,
+    color: '#fff',
+    justifyContent: 'center'
   },
   infoText: {
     height: 28,
@@ -80,7 +87,7 @@ function Simple() {
 
       } else {
         db.push(
-          {name: element['name'], img: element['image_url']}
+          {name: element['name'], img: element['image_url'], rating: element['rating'], phone: element['phone']}
         )
         queueIdx += 1
         queueSize += 1
@@ -109,10 +116,13 @@ function Simple() {
           <TinderCard key={character.name} onSwipe={(dir) => swiped(dir, character.name)} onCardLeftScreen={() => outOfFrame(character.name)}>
             <View style={styles.card}>
               <ImageBackground style={styles.cardImage} source={{uri: character.img}}>
-                <Text style={styles.cardTitle}>{character.name}</Text>
+                <Text style={styles.cardTitle}>{character.name} || Rating: {character.rating}</Text>
+                <Text style={styles.cardAdditionalInfo}>{character.phone}</Text>
               </ImageBackground>
             </View>
+            
           </TinderCard>
+          
         )}
       </View>
       {lastDirection ? <Text style={styles.infoText}>You swiped {lastDirection}</Text> : <Text style={styles.infoText} />}
