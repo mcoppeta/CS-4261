@@ -17,15 +17,15 @@ const styles = {
   },
   cardContainer: {
     width: '90%',
-    maxWidth: 260,
+    maxWidth: 300,
     height: 400,
   },
   card: {
     position: 'absolute',
     backgroundColor: '#fff',
     width: '100%',
-    maxWidth: 260,
-    height: 300,
+    maxWidth: 400,
+    height: 600,
     shadowColor: 'black',
     shadowOpacity: 0.2,
     shadowRadius: 20,
@@ -46,7 +46,7 @@ const styles = {
   },
   cardAdditionalInfo: {
     position: 'absolute',
-    bottom: 260,
+    bottom: 550,
     margin: 10,
     color: '#fff',
     justifyContent: 'center'
