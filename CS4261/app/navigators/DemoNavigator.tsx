@@ -1,12 +1,14 @@
 import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { CompositeScreenProps } from "@react-navigation/native"
 import React from "react"
+import { useState } from "react"
 import { TextStyle, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Icon } from "../components"
 import { translate } from "../i18n"
 import { DemoCommunityScreen, DemoShowroomScreen, DemoDebugScreen } from "../screens"
 import CardSwipeScreen from "../screens/CardSwipeScreen"
+import RightSwipeSCreen from '../screens/RightSwipeScreen'
 import { DemoPodcastListScreen } from "../screens/DemoPodcastListScreen"
 import { colors, spacing, typography } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
@@ -17,6 +19,7 @@ export type DemoTabParamList = {
   DemoDebug: undefined
   DemoPodcastList: undefined
   DemoCards: undefined
+  RightSwiped: undefined
 }
 
 /**
@@ -33,6 +36,8 @@ const Tab = createBottomTabNavigator<DemoTabParamList>()
 
 export function DemoNavigator() {
   const { bottom } = useSafeAreaInsets()
+  const [getRightSwipeName, setRightSwipeName] = useState(false);
+  const [getRightSwipeID, setRightSwipeID] = useState(false);
 
   return (
     <Tab.Navigator
@@ -46,14 +51,26 @@ export function DemoNavigator() {
         tabBarItemStyle: $tabBarItem,
       }}
     >
-      <Tab.Screen
-        name="DemoCards"
-        component={CardSwipeScreen}
-        options={{
-          tabBarLabel: "Restaurants",
-          tabBarIcon: ({ focused }) => <Icon icon="components" color={focused && colors.tint} />,
-        }}
-      />
+      {getRightSwipeName ? 
+        <Tab.Screen
+          name="RightSwiped"
+          children={() => <RightSwipeSCreen name={getRightSwipeName} identification={getRightSwipeID} />}
+          options={{
+            tabBarLabel: "Restaurants",
+            tabBarIcon: ({ focused }) => <Icon icon="components" color={focused && colors.tint} />,
+          }}
+        />
+       : 
+        <Tab.Screen
+          name="DemoCards"
+          children={() => <CardSwipeScreen setName={setRightSwipeName} setID={setRightSwipeID} />}
+          options={{
+            tabBarLabel: "Restaurants",
+            tabBarIcon: ({ focused }) => <Icon icon="components" color={focused && colors.tint} />,
+          }}
+        />
+      }
+      
 
       {/*
       <Tab.Screen

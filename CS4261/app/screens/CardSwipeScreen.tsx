@@ -70,7 +70,7 @@ const updateQueue = async (getRestaurants, setRestaurants) => {
 }
 
 
-function Simple() {
+function Simple(props) {
   // TEST for api yelp
   const [getRestaurants, setRestaurants] = useState([]);
 
@@ -87,7 +87,7 @@ function Simple() {
 
       } else {
         db.push(
-          {name: element['name'], img: element['image_url'], rating: element['rating'], phone: element['phone']}
+          {name: element['name'], img: element['image_url'], rating: element['rating'], phone: element['phone'], id: element['id']}
         )
         queueIdx += 1
         queueSize += 1
@@ -98,10 +98,16 @@ function Simple() {
   const characters = db
   const [lastDirection, setLastDirection] = useState()
 
-  const swiped = (direction, nameToDelete) => {
-    console.log('removing: ' + nameToDelete)
+  const swiped = (direction, character) => {
+    console.log('removing: ' + character.name)
     queueSize -= 1
     setLastDirection(direction)
+    
+    if (direction === 'right') {
+      props.setID(character.id)
+      props.setName(character.name)
+    }
+    
   }
 
   const outOfFrame = (name) => {
@@ -113,7 +119,7 @@ function Simple() {
       <Text style={styles.header}>Card Swiping Test</Text>
       <View style={styles.cardContainer}>
         {characters.map((character) =>
-          <TinderCard key={character.name} onSwipe={(dir) => swiped(dir, character.name)} onCardLeftScreen={() => outOfFrame(character.name)}>
+          <TinderCard key={character.name} onSwipe={(dir) => swiped(dir, character)} onCardLeftScreen={() => outOfFrame(character.name)}>
             <View style={styles.card}>
               <ImageBackground style={styles.cardImage} source={{uri: character.img}}>
                 <Text style={styles.cardTitle}>{character.name} || Rating: {character.rating}</Text>
