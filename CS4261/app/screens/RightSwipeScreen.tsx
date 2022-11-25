@@ -13,7 +13,7 @@ const styles = {
     display: 'flex',
     //alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop: '20%',
+    marginTop: '10%',
     width: '100%',
     height: '95%',
     backgroundColor: 'white'
@@ -98,6 +98,12 @@ const styles = {
     marginTop: '5%',
     fontSize: 20,
   },
+  catlink: {
+    marginLeft: '20%',
+    marginTop: '5%',
+    fontSize: 20,
+    color: 'blue',
+  },
   sav: {
     flex: 1,
   }
@@ -124,12 +130,12 @@ const distToRestaurant = (yourLat, yourLon, rLat, rLon) => {
 
 const getLocation = (setLocation, setErrorMsg) => {
   (async () => {
-    /*
+    
     let { status } = await Location.requestPermissionsAsync();
     if (status !== 'granted') {
       setErrorMsg('Permission to access location was denied');
     }
-    */
+    
 
     //Location.setGoogleApiKey(apiKey);
 
@@ -140,9 +146,6 @@ const getLocation = (setLocation, setErrorMsg) => {
 };
 
 function RestaurantDetails(props) {
-  
-  console.log('IN DETAILS\n') //todo delete
-  console.log(JSON.stringify(props.data, null, 2))
   const data = props.data
   const rcoords = props.data.coordinates
   var dist = distToRestaurant(props.lat, props.lon, rcoords.latitude, rcoords.longitude)
@@ -185,9 +188,14 @@ function RestaurantDetails(props) {
               </View>
             </View>
             <View>
-              <Text style={styles.catHeader}>Categories:</Text>
+              <Text style={styles.catHeader}>More Info:</Text>
               <View>
-                  {categories.map((cat) => {return <Text style={styles.cats}>{cat}</Text>})}
+                  <Pressable onPress={()=>{Linking.openURL(`tel:${data.phone}`)}}>
+                    <Text style={styles.catlink}>{data.display_phone}</Text>
+                  </Pressable>
+                  <Pressable onPress={()=>{Linking.openURL(`${data.url}`)}}>
+                    <Text style={styles.catlink}>Website</Text>
+                  </Pressable>
               </View>
             </View>
           </View>
@@ -207,7 +215,6 @@ function Simple(props) {
   useEffect(() => {
     getLocation(setLocation, setErrorMsg)
     pullRestaurant(props.identification, setRestaurant)
-    console.log(location)
   }, [])
 
   return (
