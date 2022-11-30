@@ -44,6 +44,12 @@ const styles = {
     margin: 10,
     color: '#fff',
   },
+  adTitle: {
+    position: 'absolute',
+    bottom: 0,
+    margin: 10,
+    color: '#000',
+  },
   cardAdditionalInfo: {
     position: 'absolute',
     bottom: 260,
@@ -82,6 +88,7 @@ function Simple(props) {
   // This pushes the name and image URL from each element of getRestaurants to db.
   useEffect(() => {
     console.log('r: ' + getRestaurants)
+  
     getRestaurants.map(element => {
       if (db.some(e => e.name === element.name)) {
 
@@ -92,7 +99,16 @@ function Simple(props) {
         queueIdx += 1
         queueSize += 1
       }
+      
     });
+
+    if (db.length > 0 && db.filter(e => e.name === 'AD').length == 0) {
+      db.splice(db.length-2, 0, {name: 'AD'})
+      queueIdx += 1
+      queueSize += 1
+    }
+
+    db.forEach((e)=>{console.log('\tname:\t'+e.name)})
   }, [getRestaurants])
   
   const characters = db
@@ -103,7 +119,7 @@ function Simple(props) {
     queueSize -= 1
     setLastDirection(direction)
     
-    if (direction === 'right') {
+    if (direction === 'right' && character.name !== 'AD') {
       props.setID(character.id)
       props.setName(character.name)
     }
@@ -122,7 +138,7 @@ function Simple(props) {
           <TinderCard key={character.name} onSwipe={(dir) => swiped(dir, character)} onCardLeftScreen={() => outOfFrame(character.name)}>
             <View style={styles.card}>
               <ImageBackground style={styles.cardImage} source={{uri: character.img}}>
-                <Text style={styles.cardTitle}>{character.name} || Rating: {character.rating}</Text>
+                <Text style={character.name == 'AD' ? styles.adTitle : styles.cardTitle}>{character.name} {character.name == 'AD' ? null : `|| Rating: ${character.rating}`}</Text>
                 <Text style={styles.cardAdditionalInfo}>{character.phone}</Text>
               </ImageBackground>
             </View>
