@@ -44,6 +44,12 @@ const styles = {
     margin: 10,
     color: '#fff',
   },
+  adTitle: {
+    position: 'absolute',
+    bottom: 0,
+    margin: 10,
+    color: '#000',
+  },
   cardAdditionalInfo: {
     position: 'absolute',
     bottom: 260,
@@ -70,7 +76,7 @@ const updateQueue = async (getRestaurants, setRestaurants) => {
 }
 
 
-function Simple() {
+function Simple(props) {
   // TEST for api yelp
   const [getRestaurants, setRestaurants] = useState([]);
 
@@ -82,26 +88,42 @@ function Simple() {
   // This pushes the name and image URL from each element of getRestaurants to db.
   useEffect(() => {
     console.log('r: ' + getRestaurants)
+  
     getRestaurants.map(element => {
       if (db.some(e => e.name === element.name)) {
 
       } else {
         db.push(
-          {name: element['name'], img: element['image_url'], rating: element['rating'], phone: element['phone']}
+          {name: element['name'], img: element['image_url'], rating: element['rating'], phone: element['phone'], id: element['id']}
         )
         queueIdx += 1
         queueSize += 1
       }
+      
     });
+
+    if (db.length > 0 && db.filter(e => e.name === 'AD').length == 0) {
+      db.splice(db.length-2, 0, {name: 'AD'})
+      queueIdx += 1
+      queueSize += 1
+    }
+
+    db.forEach((e)=>{console.log('\tname:\t'+e.name)})
   }, [getRestaurants])
   
   const characters = db
   const [lastDirection, setLastDirection] = useState()
 
-  const swiped = (direction, nameToDelete) => {
-    console.log('removing: ' + nameToDelete)
+  const swiped = (direction, character) => {
+    console.log('removing: ' + character.name)
     queueSize -= 1
     setLastDirection(direction)
+    
+    if (direction === 'right' && character.name !== 'AD') {
+      props.setID(character.id)
+      props.setName(character.name)
+    }
+    
   }
 
   const outOfFrame = (name) => {
@@ -113,10 +135,10 @@ function Simple() {
       <Text style={styles.header}>Card Swiping Test</Text>
       <View style={styles.cardContainer}>
         {characters.map((character) =>
-          <TinderCard key={character.name} onSwipe={(dir) => swiped(dir, character.name)} onCardLeftScreen={() => outOfFrame(character.name)}>
+          <TinderCard key={character.name} onSwipe={(dir) => swiped(dir, character)} onCardLeftScreen={() => outOfFrame(character.name)}>
             <View style={styles.card}>
               <ImageBackground style={styles.cardImage} source={{uri: character.img}}>
-                <Text style={styles.cardTitle}>{character.name} || Rating: {character.rating}</Text>
+                <Text style={character.name == 'AD' ? styles.adTitle : styles.cardTitle}>{character.name} {character.name == 'AD' ? null : `|| Rating: ${character.rating}`}</Text>
                 <Text style={styles.cardAdditionalInfo}>{character.phone}</Text>
               </ImageBackground>
             </View>

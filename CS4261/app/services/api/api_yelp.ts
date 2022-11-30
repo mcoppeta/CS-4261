@@ -35,6 +35,23 @@ export class yelpAPI {
   }
 
   /*
+    Get single restaurant data from Yelp.
+  */
+  async getRestaurant(id) {
+    // make the api call
+    const response = await this.apisauce.get(
+      `/businesses/${id}`,
+    ).then((res) => {
+      if (res.status == 200) {
+        return res.data;
+      } else {
+        console.log("Yelp API Error");
+      }
+    })
+    return response
+  }
+
+  /*
     Get list of restaurants from Yelp.
 
     Useful keys per restaurant object:
@@ -45,8 +62,6 @@ export class yelpAPI {
   */
   async getRestaurants({location = 'Georgia Tech', category = 'food', limit = 20, offset = 0}) {
     // make the api call
-    console.log('in function')
-    console.log({offset})
     const response = await this.apisauce.get(
       `/businesses/search?location=${location}&category=${category}&limit=${limit}&offset=${offset}`,
     ).then((res) => {
