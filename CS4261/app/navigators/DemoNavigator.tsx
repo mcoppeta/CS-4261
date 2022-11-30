@@ -54,7 +54,7 @@ export function DemoNavigator() {
       {getRightSwipeName ? 
         <Tab.Screen
           name="RightSwiped"
-          children={() => <RightSwipeSCreen name={getRightSwipeName} identification={getRightSwipeID} />}
+          children={() => <RightSwipeSCreen name={getRightSwipeName} identification={getRightSwipeID} clear={setRightSwipeName} />}
           options={{
             tabBarLabel: "Restaurants",
             tabBarIcon: ({ focused }) => <Icon icon="components" color={focused && colors.tint} />,

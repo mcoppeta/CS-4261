@@ -104,6 +104,13 @@ const styles = {
     fontSize: 20,
     color: 'blue',
   },
+  backLink: {
+    marginLeft: '10%',
+    marginTop: '0%',
+    marginBottom: '5%',
+    fontSize: 20,
+    color: 'blue',
+  },
   sav: {
     flex: 1,
   }
@@ -164,6 +171,9 @@ function RestaurantDetails(props) {
 
   return (
     <View style={styles.container}>
+      <Pressable onPress={()=>{props.clear(false)}}>
+        <Text style={styles.backLink}>Back</Text>
+      </Pressable>
       <View style={styles.aligned}>
         <Image 
           style={styles.cardImage}
@@ -222,7 +232,7 @@ function Simple(props) {
       {!restaurant ? 
         <Text style={styles.header}>loading...</Text>
       :
-        <RestaurantDetails data={restaurant} lat={location ? location['latitude'] : null} lon={location ? location['longitude'] : null} />
+        <RestaurantDetails clear={props.clear} data={restaurant} lat={location ? location['latitude'] : null} lon={location ? location['longitude'] : null} />
       }
     </View>
   )
